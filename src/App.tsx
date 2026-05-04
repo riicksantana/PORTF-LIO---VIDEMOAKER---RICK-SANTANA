@@ -644,10 +644,9 @@ export default function App() {
           <div className="absolute -top-4 -left-4 w-24 h-24 border-t border-l border-cinema-accent z-0" />
           <div className="relative overflow-hidden z-10 bg-zinc-900 aspect-[4/5]">
             <img 
-              src="https://images.unsplash.com/photo-1542013936693-884638332954?auto=format&fit=crop&q=80" 
+              src="/about-image.jpg" 
               className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 hover:scale-105"
               alt="Rick Santana"
-              referrerPolicy="no-referrer"
               loading="lazy"
               decoding="async"
             />

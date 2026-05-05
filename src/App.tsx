@@ -264,6 +264,14 @@ const Nav = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -316,14 +324,14 @@ const Nav = () => {
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <>
+          <div className="fixed inset-0 z-[100] md:hidden">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] md:hidden"
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
             />
             
             {/* Menu Panel */}
@@ -332,7 +340,7 @@ const Nav = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[85%] max-w-sm bg-cinema-black border-l border-white/10 z-[110] p-10 flex flex-col md:hidden shadow-2xl"
+              className="absolute top-0 right-0 h-full w-[85%] max-w-sm bg-cinema-black border-l border-white/10 p-10 flex flex-col shadow-2xl"
             >
               <div className="flex items-center justify-between mb-16">
                 <div className="text-xl font-display font-black tracking-tighter uppercase">
@@ -371,7 +379,7 @@ const Nav = () => {
                 </div>
               </div>
             </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </nav>
@@ -684,7 +692,7 @@ export default function App() {
           <div className="absolute -top-4 -left-4 w-24 h-24 border-t border-l border-cinema-accent z-0" />
           <div className="relative overflow-hidden z-10 bg-zinc-900 aspect-[4/5]">
             <img 
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" 
+              src="https://i.postimg.cc/qMZ0df28/20260428-210709-IMG-STYLE.jpg" 
               className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 hover:scale-105"
               alt="Rick Santana"
               referrerPolicy="no-referrer"

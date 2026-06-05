@@ -264,6 +264,14 @@ const Nav = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -305,33 +313,73 @@ const Nav = () => {
 
         {/* Mobile Toggle */}
         <button 
-          className="md:hidden text-white"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden text-white p-2 hover:bg-white/5 transition-colors rounded-sm"
+          onClick={() => setMobileMenuOpen(true)}
+          aria-label="Open Menu"
         >
-          {mobileMenuOpen ? <X /> : <Menu />}
+          <Menu />
         </button>
       </div>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-cinema-black border-b border-white/10 p-6 flex flex-col gap-4 md:hidden"
-          >
-            {navLinks.map(link => (
-              <a 
-                key={link.name} 
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-lg font-display text-white"
-              >
-                {link.name}
-              </a>
-            ))}
-          </motion.div>
+          <div className="fixed inset-0 z-[100] md:hidden">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            />
+            
+            {/* Menu Panel */}
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="absolute top-0 right-0 h-full w-[85%] max-w-sm bg-cinema-black border-l border-white/10 p-10 flex flex-col shadow-2xl"
+            >
+              <div className="flex items-center justify-between mb-16">
+                <div className="text-xl font-display font-black tracking-tighter uppercase">
+                  RICK<span className="text-cinema-accent">SANTANA</span>
+                </div>
+                <button 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-white p-2 hover:bg-white/5 transition-colors rounded-sm"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-8">
+                {navLinks.map((link, i) => (
+                  <motion.a 
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + i * 0.1 }}
+                    key={link.name} 
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-3xl font-black uppercase tracking-tighter hover:text-cinema-accent transition-colors"
+                  >
+                    {link.name}
+                  </motion.a>
+                ))}
+              </div>
+
+              <div className="mt-auto pt-10 border-t border-white/5">
+                <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-4">Redes Sociais</p>
+                <div className="flex gap-6">
+                  <a href="#" className="text-white/50 hover:text-cinema-accent transition-colors"><Instagram size={20} /></a>
+                  <a href="#" className="text-white/50 hover:text-cinema-accent transition-colors"><Video size={20} /></a>
+                  <a href="#" className="text-white/50 hover:text-cinema-accent transition-colors"><Mail size={20} /></a>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </nav>
@@ -644,7 +692,7 @@ export default function App() {
           <div className="absolute -top-4 -left-4 w-24 h-24 border-t border-l border-cinema-accent z-0" />
           <div className="relative overflow-hidden z-10 bg-zinc-900 aspect-[4/5]">
             <img 
-              src="/about-image.jpg" 
+              src="https://i.postimg.cc/qMZ0df28/20260428-210709-IMG-STYLE.jpg" 
               className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 hover:scale-105"
               alt="Rick Santana"
               loading="lazy"
